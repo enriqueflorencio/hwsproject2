@@ -17,6 +17,7 @@ class ViewController: UIViewController {
     var countries = [String]()
     var correctAnswer = 0
     var score = 0
+    var numOfQuestions = 0
     //Some code to check if it worked from this new laptop
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +39,14 @@ class ViewController: UIViewController {
         button3.setImage(UIImage(named: countries[2]), for: .normal)
         correctAnswer = Int.random(in: 0...2)
         title = countries[correctAnswer].uppercased() + " Current Score: \(score)"
+        numOfQuestions += 1
+        if numOfQuestions == 11 {
+            let ac = UIAlertController(title: "You have answered 10 questions", message: "Final Score: \(score) / 10", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "Continue", style: .default, handler: askQuestion))
+            present(ac, animated: true)
+            numOfQuestions = 0
+            score = 0
+        }
     }
     @IBAction func buttonTapped(_ sender: UIButton) {
         var title: String
@@ -46,7 +55,7 @@ class ViewController: UIViewController {
             title = "Correct"
             score += 1
         } else {
-            title = "Wrong"
+            title = "Wrong! That's the flag of \(countries[sender.tag].uppercased())!"
             score -= 1
         }
         
